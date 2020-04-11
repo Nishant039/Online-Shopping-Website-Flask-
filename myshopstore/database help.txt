@@ -1,0 +1,1 @@
+https://techarena51.com/blog/many-to-many-relationships-with-flask-sqlalchemy/

@@ -1,0 +1,85 @@
+{% extends "layout.html" %}
+
+
+{% block bodyblock %}
+
+<div height=100px></div>
+<h2>Welcome to MyShopStore</h2>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+		<table class="table table-image">
+		  <thead>
+		    <tr>
+		      <th scope="col">S.NO</th>
+		      <th scope="col">Item</th>
+		      <th scope="col">Item Name</th>
+		      <th scope="col">Gender</th>
+		      <th scope="col">Size</th>
+		      <th scope="col">Cost</th>
+		      <th scope="col">Quantity Available</th>
+		      <th></th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	{% for item in items %}
+		    <tr>
+		      <th scope="row">
+		      {{item.id}}</th>
+
+		      {% if current_user.email=="jo.supplier1@gmail.com" %}
+		      <td class="w-25">
+		      	<a href="{{url_for('updateitem',id=item.id)}}">
+			      <img src="{{url_for('static',filename='itemicon/'+ item.image)}}" alt="Sheep">
+			      </a>
+		      </td>
+
+		      {%  else %}
+
+		      <td class="w-25">
+
+			      <img src="{{url_for('static',filename='itemicon/'+ item.image)}}" alt="Sheep">
+
+		      </td>
+
+
+		      {% endif %}
+		      <td>{{item.name}}</td>
+		      <td>{{item.gender}}</td>
+		      <td>{{item.size}}</td>
+		      <td>{{item.cost}}</td>
+		      <td>{{item.quantity}}</td>
+		      <td>
+		      	<form action='{{url_for('addcart',item_id=item.id)}}' method="POST" >
+		      		<label>Quantity</label>
+		      		<span class="input-group-btn">
+                                         <div style="background-color:Orange; width:30% ;margin:2px 0px; text-align: center; font-size: 1.2em; color:White;"  onClick="var result = document.getElementById('{{ item.id }}'); var qty = result.value; if( !isNaN( qty ) &amp;&amp; qty &gt; 0 ) result.value--;return false;" class="dec qtybutton"><i class="fa fa-minus">&nbsp;</i>-</div>
+
+            <input type="text" style="max-width: 65px; border-radius: 0" class="qty" title="Qty" value="0" min="0" id="{{ item.id }}" name="quantity">
+
+
+            <div style="background-color:Green; width:30% ;margin:2px 0px; text-align: center; font-size: 1.2em; color:White;" onClick="var result = document.getElementById('{{ item.id }}'); var qty = result.value; if( !isNaN( qty )) result.value++;return false;" class="inc qtybutton"><i class="fa fa-plus">&nbsp;</i>+</div>
+                                    </span>
+		      	<button type="submit">Add to Cart</button></td>
+		      	</form>
+		    </tr>
+		    {% endfor %}
+		    <!-- <tr>
+		      <th scope="row">2</th>
+		      <td class="w-25">
+			      <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/sheep-5.jpg" class="img-fluid img-thumbnail" alt="Sheep">
+		      </td>
+		      <td>Bootstrap Grid 4 Tutorial and Examples</td>
+		      <td>Cristina</td>
+		      <td>1.434</td>
+		      <td>3.417</td>
+		    </tr> -->
+		  </tbody>
+		</table>   
+    </div>
+  </div>
+</div>
+
+
+{%  endblock %}

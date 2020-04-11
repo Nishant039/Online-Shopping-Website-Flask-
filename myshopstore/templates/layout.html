@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{title}}</title>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<link rel="stylesheet" type="text/css" href="{{url_for('static',filename="main.css")}}">
+
+
+
+
+</head>
+<body>
+
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+<li class="navbar-brand active">
+                <a class="navbar-brand" href="#">MyShopStore</a>
+            </li>
+
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="{{url_for('home')}}">Home</a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="#">About</a>
+            </li>
+            {% if current_user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="#">Welcome {{current_user.username.title()}} !</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+    
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+{% if current_user.is_authenticated %}
+<li class="nav-item">
+                <a class="nav-link" href="{{url_for('cart')}}">Cart</a>
+            </li>
+            {% if current_user.email=="jo.supplier1@gmail.com" %}
+
+             <li class="nav-item">
+                <a class="nav-link" href="{{url_for('additem')}}">Add Item</a>
+            </li>
+
+
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('address')}}">Create/Update Address Info</a>
+            </li>
+            {% endif %}
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
+            </li>
+
+{% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('register')}}">Register</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('login')}}">Login</a>
+            </li>
+
+{%  endif %}
+        </ul>
+    </div>
+</nav>
+
+
+<div class="container">
+    
+        {% with messages = get_flashed_messages(with_categories=True) %}
+
+        {% if messages %}
+        {% for category,message in messages %}
+        <div class="alert alert-{{category }}">{{message}}</div>
+        
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+{% block bodyblock %}
+
+{% endblock %}
+</div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script type="text/javascript" src="{{url_for('static',filename="script.js")}}"></script>
+</body>
+</html>

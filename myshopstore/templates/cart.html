@@ -1,0 +1,143 @@
+{% extends "layout.html" %}
+
+{% block bodyblock %}
+<div class="container">
+	<h2>Your Cart!</h2>
+
+	
+<div class="container" style="max-width: 800px">
+  <div class="row">
+    <div class="col-12">
+		<table class="table table-image">
+		  <thead>
+		    <tr>
+		      <th scope="col">Item</th>
+		      <th></th>
+		      <th scope="col">Cost</th>
+		      <th scope="col">Quantity</th>
+		      <th></th>
+		      <th scope="col">Total Cost</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	{% set total = namespace(value=0) %}
+		  	{% for item in associated_items %}
+		    <tr>
+		      <th scope="row">
+		      {{item.item.name}}</th>
+		      <td class="w-25">
+			      <img src="{{url_for('static',filename='itemicon/'+ item.item.image)}}" alt="Sheep">
+		      </td>
+		      <td>{{item.item.cost}}</td>
+		 
+		      <td><!-- {{item.quant}} -->
+
+<input readonly="readonly" type="text" style="max-width: 65px; border-radius: 0; cursor:context-menu;" class="qty" title="Qty" value="{{item.quant}}" min="0" id="{{ item.item.id }}" name="quantity">
+	
+
+				<td>
+		      <div  style=" width:30% ;margin:5px 2px; text-align: center; font-size: 1.2em; color:White; padding: 0px 0px 0px 0px;"  class="dec qtybutton">
+
+		      <form  method="POST" action="{{url_for('minuscart',item_id=item.item.id)}}">	
+		      <button style="min-width: 28px;" type="submit">-</button>
+		      </form>
+		      </div>
+
+		       <div style=" width:30% ;margin:1px 2px; text-align: center; font-size: 1.2em; color:White; text-align: center; padding: 0px 0px 0px 0px; " class="inc qtybutton">
+
+		       	<form action="{{url_for('pluscart',item_id=item.item.id)}}" method="POST"> 
+		       	 <button type="submit">+
+		       	 </button>
+
+		       		</form>
+		      </div>
+            
+</td>
+            </td>
+
+		      <td>{{item.quant * item.item.cost}}</td>
+		    {% set total.value = total.value + item.quant * item.item.cost %}
+		  </tr>
+		  {% endfor %}
+
+{% if associated_items %}
+		  <tr>
+		  	<th scope="row"></th>
+		  	<td></td>
+		  	<td>GRAND TOTAL - </td>
+		  	<td>{{total.value}}</td>
+		  	<td>
+
+		  	{% if current_user.infos %}	
+
+		  			  	<button type="button" class="btn btn-success btn-sm m-1" data-toggle="modal" data-target="#buyModal">Confirm Purchase</button>
+
+		  	{% else %}
+
+		  				  	<button type="button" class="btn btn-success btn-sm m-1" ><a href="{{url_for('address')}}" style="text-decoration: none; color: white;">Confirm Purchase</a></button>
+
+		  	{% endif %}
+		  		
+		  	
+
+
+<!-- Modal -->
+			<div class="modal fade" id="buyModal" tabindex="-1" role="dialog" aria-labelledby="buyModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="buyModalLabel">Confirm Payment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to proceed to payment ?
+      	<br>
+      	Total Cost - <strong>{{total.value}}</strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+       <form action="{{url_for('commitorder')}}" method="POST">
+       	<input type="submit" class="btn btn-success" name="" value="Confirm Buy">
+       	</form>
+
+       	      </div>
+    </div>
+  </div>
+</div>
+
+
+		  	</td>
+		  </tr>
+		  </tbody>
+		</table>
+
+    </div>
+  </div>
+</div>
+
+
+{% else %}
+
+<div class="container"> 
+
+<button style="color: white; background-color: Green ;border:none;border-radius: 3%;"> <a href="{{url_for('home')}}" style="color: white;text-decoration: none;padding: 1px;"> 
+<h2 >BUY SOMETHING NOW !</h2>
+</a>
+</button>
+
+ </div>
+
+{% endif %}
+       
+
+
+
+
+
+
+
+</div>
+{% endblock %}
